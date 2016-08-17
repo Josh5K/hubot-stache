@@ -1,13 +1,12 @@
 hubot-stache
 ================
 
-Hubot plugin to add a moustache to the face of a photo
+Hubot plugin to add a moustache to the face of a photo.
 
-**Note:**
 Currently this hubot plugin only works with Slack. If you would like to help port it to other platforms, submit a [Pull Request](https://github.com/neufeldtech/hubot-stache/pulls/)
 
 ## Installation
-
+**This hubot script requires version 4+ of the [hubot-slack](https://github.com/slackhq/hubot-slack) slack adapter package**
 
 * Run the ```npm install``` command
 
