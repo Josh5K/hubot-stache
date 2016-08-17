@@ -17,10 +17,10 @@ class Barber
     tempName = temp.path({suffix: ext})
     r = request.post(moustachify_options)
     r.on('error', (err) ->
-      return cb "There was an error converting to moustachify: #{err}")
+      return cb "There was an error with the moustachification: #{err}")
     r.on('response', (response) ->
       if response.statusCode != 200
-        return cb "There was an error converting to moustachify: #{JSON.stringify(response.body)}"
+        return cb "There was an error with the moustachification: #{JSON.stringify(response.body)}"
       r.pipe(stream = fs.createWriteStream(tempName))
       stream.on 'finish', ->
         cb null, tempName)

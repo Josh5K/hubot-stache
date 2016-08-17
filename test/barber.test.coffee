@@ -88,7 +88,7 @@ describe 'barber module', ->
           @nock.enableNetConnect()
         it 'should return error message', (done) ->
           barber.moustachify __dirname + '/img/cat.jpg', (err, moustacheFilename) ->
-            expect(err).to.match /There was an error converting to moustache/
+            expect(err).to.match /There was an error with the moustachification/
             done()
 
       context 'on failure due to http 400', ->
@@ -104,5 +104,5 @@ describe 'barber module', ->
           @nock.enableNetConnect()
         it 'should return error message', (done) ->
           barber.moustachify __dirname + '/img/cat.jpg', (err, moustacheFilename) ->
-            expect(err).to.match /There was an error converting to moustache/
+            expect(err).to.match /There was an error with the moustachification/
             done()

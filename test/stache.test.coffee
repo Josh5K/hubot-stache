@@ -9,14 +9,14 @@ sinon = require('sinon')
 {TextMessage, CatchAllMessage} = require.main.require 'hubot'
 
 Helper = require('hubot-test-helper')
-helper = new Helper('../scripts/receptionist.coffee')
+helper = new Helper('../scripts/stache.coffee')
 
 
 describe 'stache hubot script', ->
   describe 'attachment moustachifier', ->
     context 'on success', ->
       beforeEach ->
-        @room = helper.createRoom()
+        @room = helper.createRoom(httpd: false)
         @room.robot.adapter.client =
           web:
             files:
@@ -42,7 +42,7 @@ describe 'stache hubot script', ->
       afterEach ->
         @nock.cleanAll()
         @nock.enableNetConnect()
-        @room.destroy()
+
 
       it 'should upload the footballified version without error messages', ->
         #write this eventually
@@ -50,7 +50,7 @@ describe 'stache hubot script', ->
 
     context 'on failure to download slack attachment', ->
       beforeEach ->
-        @room = helper.createRoom()
+        @room = helper.createRoom(httpd: false)
         @nock = require('nock')
         @nock.disableNetConnect()
         @nock('http://files.slack.test')
@@ -65,7 +65,7 @@ describe 'stache hubot script', ->
       afterEach ->
         @nock.cleanAll()
         @nock.enableNetConnect()
-        @room.destroy()
+
 
       it 'should send error message', ->
         #write this eventually
@@ -75,7 +75,7 @@ describe 'stache hubot script', ->
 
     context 'on failure to moustachify the image', ->
       beforeEach ->
-        @room = helper.createRoom()
+        @room = helper.createRoom(httpd: false)
         @nock = require('nock')
         @nock.disableNetConnect()
         @nock('http://files.slack.test')
@@ -94,17 +94,17 @@ describe 'stache hubot script', ->
       afterEach ->
         @nock.cleanAll()
         @nock.enableNetConnect()
-        @room.destroy()
+
 
       it 'should send error message', ->
         #write this eventually
         expect(@room.messages).to.eql [
-          ['hubot', 'I had an error trying to moustachify you :sob: There was an error converting to moustache: Error: Bro, I could not even make you a moustache']
+          ['hubot', 'I had an error trying to moustachify you :sob: There was an error with the moustachification: Error: Bro, I could not even make you a moustache']
         ]
 
     context 'on failure to upload slack attachment', ->
       beforeEach ->
-        @room = helper.createRoom()
+        @room = helper.createRoom(httpd: false)
         @room.robot.adapter.client =
           web:
             files:
@@ -129,7 +129,7 @@ describe 'stache hubot script', ->
       afterEach ->
         @nock.cleanAll()
         @nock.enableNetConnect()
-        @room.destroy()
+
 
       it 'should send error message', ->
         #write this eventually

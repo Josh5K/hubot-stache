@@ -15,9 +15,11 @@
   },
   "keywords": [
     "hubot-scripts",
-    "moustache",
     "hubot-stache",
     "hubot-moustache",
+    "moustache",
+    "moustachification",
+    "moustachify",
     "stache"
   ],
   "author": "Jordan Neufeld <myjc.niv@gmail.com>",
