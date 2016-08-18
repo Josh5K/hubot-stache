@@ -22,15 +22,6 @@ npm install hubot-stache --save
 
 ## Usage
 
-### Method one
-
 - Upload a photo to slack (at least 500px x 300px) that contains at least one face
 - Add a comment to the photo upload ```@hubot stache me```
-- Hubot will upload a moustachified version of the photo to Slack
-
-### Method two
-- Use the **hubot stache me** command with a URL of a photo (at least 500px x 300px)
-```
-@hubot stache me https://raw.githubusercontent.com/neufeldtech/funnyface/master/docs/img/barack.jpg
-```
 - Hubot will upload a moustachified version of the photo to Slack
