@@ -19,9 +19,20 @@ npm install hubot-stache --save
 ```
 ["hubot-stache"]
 ```
+## Note
+This script uses some of the same listeners as ```hubot-google-images``` which is installed by default when using the [Yeoman generator](https://github.com/github/generator-hubot/blob/883d42092701634720df52451d70977b215f1f3c/generators/app/index.js). If you are not using ```hubot-google-images```, you may want to remove it from your external-scripts.json file.
 
 ## Usage
-
+### Method One
 - Upload a photo to slack (at least 500px x 300px) that contains at least one face
 - Add a comment to the photo upload ```@hubot stache me```
 - Hubot will upload a moustachified version of the photo to Slack
+
+### Method Two
+- ```@hubot stache me https://raw.githubusercontent.com/neufeldtech/funnyface/master/docs/img/barack.jpg```
+- Hubot will respond with a moustachified version of the photo
+
+## Tests
+- Use node 6.2+
+- ```npm install```
+- ```npm test```

@@ -44,7 +44,7 @@ describe 'stache hubot script', ->
         @nock.enableNetConnect()
 
 
-      it 'should upload the footballified version without error messages', ->
+      it 'should upload the moustachified version without error messages', ->
         #write this eventually
         expect(@room.messages).to.eql []
 
@@ -136,3 +136,15 @@ describe 'stache hubot script', ->
         expect(@room.messages).to.eql [
           ['hubot', 'I had an error trying to moustachify you :sob: I could not upload the image to slack. this is an error during the upload. boo hoo.']
         ]
+
+  describe 'url moustachifier', ->
+    context 'on success', ->
+      beforeEach ->
+        @room = helper.createRoom(httpd: false)
+
+      it 'should respond with moustachified URL', ->
+        @room.user.say('jordan.neufeld', '@hubot stache me https://raw.githubusercontent.com/neufeldtech/funnyface/master/docs/img/barack.jpg').then =>
+          expect(@room.messages).to.eql [
+            ['jordan.neufeld', '@hubot stache me https://raw.githubusercontent.com/neufeldtech/funnyface/master/docs/img/barack.jpg']
+            ['hubot', 'https://funnyface.neufeldtech.com/api/v1/image?url=https://raw.githubusercontent.com/neufeldtech/funnyface/master/docs/img/barack.jpg']
+          ]

@@ -21,6 +21,10 @@ module.exports = (robot) ->
   Barber = require('./barber')
   barber = new Barber()
 
+  robot.respond /stache me (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))/i, (msg) ->
+    url = msg.match[1]
+    msg.send "https://funnyface.neufeldtech.com/api/v1/image?url=#{url}"
+
   robot.catchAll (msg) ->
     moustacheRegex = new RegExp(robot.name + ".*stache me", "i")
     isRequestToBeMoustachified = moustacheRegex.test(msg.message.text)

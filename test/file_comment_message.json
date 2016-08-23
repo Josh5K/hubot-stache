@@ -47,7 +47,7 @@
     "permalink": "https:\/\/testing.slack.com\/files\/jordan.neufeld\/F1ZNHUG9X\/pasted_image_at_2016_08_09_12_31_pm.png",
     "permalink_public": "https:\/\/slack-files.com\/T0BCJDZ8Q-F1ZNHUG9X-5d806106f5",
     "channels": [
-      "AAABBBCCC"
+      "Shell"
     ],
     "groups": [
 
@@ -78,7 +78,7 @@
   "is_intro": false,
   "team": "T0BCJDZ8Q",
   "channel": {
-    "id": "AAABBBCCC",
+    "id": "1",
     "name": "standup",
     "is_channel": true,
     "created": 1443322340,
