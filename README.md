@@ -1,5 +1,6 @@
 hubot-stache
 ================
+[![npm version](https://badge.fury.io/js/hubot-stache.svg)](https://badge.fury.io/js/hubot-stache)
 
 Hubot plugin to add a moustache to the face of a photo.
 
