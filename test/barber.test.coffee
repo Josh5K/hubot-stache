@@ -2,7 +2,7 @@ chai = require('chai')
 expect = require('chai').expect
 fs = require('fs')
 
-Barber = require('../scripts/barber')
+Barber = require('../src/barber')
 barber = new Barber()
 
 describe 'barber module', ->

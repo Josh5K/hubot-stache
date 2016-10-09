@@ -18,7 +18,7 @@
 #   Neufeldtech https://github.com/neufeldtech
 module.exports = (robot) ->
   fs = require "fs"
-  Barber = require('./barber')
+  Barber = require('../src/barber')
   barber = new Barber()
 
   robot.respond /stache me (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))/i, (msg) ->
