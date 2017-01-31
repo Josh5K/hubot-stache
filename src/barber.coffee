@@ -14,7 +14,8 @@ rekognition = new (AWS.Rekognition)(
   accessKeyId: process.env.HUBOT_AWS_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_SECRET_ACCESS_KEY)
 
-stacheFile = __dirname + '/templates/stache.png'
+staches = [ 'stache.png', 'colonel_mustard.png', 'grand-handlebar.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
+stachesDir = __dirname + '/templates/'
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0" #ignore cert errors
 
@@ -59,6 +60,7 @@ class Barber
           x_geometry = x_mouthLeft + stache_x_offset
           stache_y_offset = (y_nose - y_mouthLeft) / 2
           y_geometry = y_mouthLeft + stache_y_offset
+          stacheFile = stachesDir + staches[Math.floor(Math.random() * 6)]
           command.push stacheFile, '-geometry', Math.floor(stacheWidth) + 'x+' + Math.floor(x_geometry) + '+' + Math.floor(y_geometry), '-composite'
           return
         command.push outputFile
