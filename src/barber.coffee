@@ -6,6 +6,7 @@ uuid = require('node-uuid')
 fs = require('fs')
 exec = require('child_process').exec
 gm = require('gm')
+imageMagick = gm.subClass({ imageMagick: true });
 async = require('async')
 _ = require('underscore')
 
@@ -30,7 +31,7 @@ class Barber
     height = undefined
     async.waterfall [
       (callback) ->
-        gm(inputFile).size (err, value) ->
+        imageMagick(inputFile).size (err, value) ->
           if err
             return callback(err)
           width = value.width
