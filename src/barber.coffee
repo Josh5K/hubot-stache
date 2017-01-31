@@ -14,7 +14,7 @@ rekognition = new (AWS.Rekognition)(
   accessKeyId: process.env.HUBOT_AWS_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_SECRET_ACCESS_KEY)
 
-stacheFile = __dirname + 'src/templates/stache.png'
+stacheFile = __dirname + '/templates/stache.png'
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0" #ignore cert errors
 
