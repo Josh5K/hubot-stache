@@ -1,48 +1,52 @@
 {
-    "name": "hubot-stache",
-    "version": "0.1.0",
-    "description": "Hubot plugin to add a moustache to the face of an uploaded photo (Slack only)",
-    "main": "index.coffee",
-    "scripts": {
-        "test": "node_modules/.bin/mocha --recursive --timeout 5000 --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
-        "install-test": "npm install && npm run test",
-        "watch": "node_modules/.bin/mocha --recursive --timeout 5000 --growl --reporter nyan --watch --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
-        "coverage": "node_modules/.bin/istanbul report"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/neufeldtech/hubot-stache.git"
-    },
-    "keywords": [
-        "hubot-scripts",
-        "hubot-stache",
-        "hubot-moustache",
-        "moustache",
-        "moustachification",
-        "moustachify",
-        "stache"
-    ],
-    "author": "Jordan Neufeld <myjc.niv@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/neufeldtech/hubot-stache/issues"
-    },
-    "homepage": "https://github.com/neufeldtech/hubot-stache",
-    "devDependencies": {
-        "bluebird": "^3.4.1",
-        "chai": "^3.5.0",
-        "co": "^4.6.0",
-        "coffee-coverage": "^1.0.1",
-        "coffee-script": "^1.10.0",
-        "hubot": "^2.19.0",
-        "hubot-test-helper": "^1.4.4",
-        "istanbul": "^0.4.4",
-        "mocha": "^3.0.2",
-        "nock": "^8.0.0",
-        "sinon": "^1.17.5"
-    },
-    "dependencies": {
-        "request": "^2.74.0",
-        "temp": "^0.8.3"
-    }
+  "name": "hubot-stache",
+  "version": "0.1.0",
+  "description": "Hubot plugin to add a moustache to the face of an uploaded photo (Slack only)",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "node_modules/.bin/mocha --recursive --timeout 5000 --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
+    "install-test": "npm install && npm run test",
+    "watch": "node_modules/.bin/mocha --recursive --timeout 5000 --growl --reporter nyan --watch --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
+    "coverage": "node_modules/.bin/istanbul report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neufeldtech/hubot-stache.git"
+  },
+  "keywords": [
+    "hubot-scripts",
+    "hubot-stache",
+    "hubot-moustache",
+    "moustache",
+    "moustachification",
+    "moustachify",
+    "stache"
+  ],
+  "author": "Jordan Neufeld <myjc.niv@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neufeldtech/hubot-stache/issues"
+  },
+  "homepage": "https://github.com/neufeldtech/hubot-stache",
+  "devDependencies": {
+    "bluebird": "^3.4.1",
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "coffee-coverage": "^1.0.1",
+    "coffee-script": "^1.10.0",
+    "hubot": "^2.19.0",
+    "hubot-test-helper": "^1.4.4",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.2",
+    "nock": "^8.0.0",
+    "sinon": "^1.17.5"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "aws-sdk": "^2.9.0",
+    "gm": "^1.23.0",
+    "request": "^2.74.0",
+    "temp": "^0.8.3",
+    "underscore": "^1.8.3"
+  }
 }
