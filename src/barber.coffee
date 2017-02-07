@@ -14,7 +14,7 @@ rekognition = new (AWS.Rekognition)(
   accessKeyId: process.env.HUBOT_AWS_REKOGNITION_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
 
-staches = [ 'stache.png', 'colonel_mustard.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
+staches = [ 'stache.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
 stachesDir = __dirname + '/templates/'
 
 class Barber
