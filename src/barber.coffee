@@ -2,7 +2,6 @@ request = require 'request'
 fs = require 'fs'
 temp = require 'temp'
 AWS = require('aws-sdk')
-uuid = require('node-uuid')
 fs = require('fs')
 exec = require('child_process').exec
 gm = require('gm')
@@ -12,13 +11,11 @@ _ = require('underscore')
 
 rekognition = new (AWS.Rekognition)(
   region: 'us-west-2'
-  accessKeyId: process.env.HUBOT_AWS_ACCESS_KEY_ID
-  secretAccessKey: process.env.HUBOT_AWS_SECRET_ACCESS_KEY)
+  accessKeyId: process.env.HUBOT_AWS_REKOGNITION_ACCESS_KEY_ID
+  secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
 
-staches = [ 'stache.png', 'colonel_mustard.png', 'grand-handlebar.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
+staches = [ 'stache.png', 'colonel_mustard.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
 stachesDir = __dirname + '/templates/'
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0" #ignore cert errors
 
 class Barber
   constructor: () ->
@@ -61,7 +58,7 @@ class Barber
           x_geometry = x_mouthLeft + stache_x_offset
           stache_y_offset = (y_nose - y_mouthLeft) / 2
           y_geometry = y_mouthLeft + stache_y_offset
-          stacheFile = stachesDir + staches[Math.floor(Math.random() * 6)]
+          stacheFile = stachesDir + staches[Math.floor(Math.random() * staches.length)]
           command.push stacheFile, '-geometry', Math.floor(stacheWidth) + 'x+' + Math.floor(x_geometry) + '+' + Math.floor(y_geometry), '-composite'
           return
         command.push outputFile
