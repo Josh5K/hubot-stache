@@ -45,6 +45,7 @@
     "async": "^2.1.4",
     "aws-sdk": "^2.9.0",
     "gm": "^1.23.0",
+    "hubot-redis-brain": "0.0.3",
     "request": "^2.74.0",
     "temp": "^0.8.3",
     "underscore": "^1.8.3"

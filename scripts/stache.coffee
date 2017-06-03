@@ -18,8 +18,19 @@
 #   Neufeldtech https://github.com/neufeldtech
 module.exports = (robot) ->
   fs = require "fs"
+  path = require "path"
   Barber = require('../src/barber')
-  barber = new Barber()
+  barber = new Barber(robot)
+
+
+  robot.router.get "/stacheoverflow", (req, res) ->
+    res.sendfile path.resolve("#{__dirname}/../src/public/stacheoverflow.html")
+  
+  robot.router.get "/stacheoverflow/main.js", (req, res) ->
+    res.sendfile path.resolve("#{__dirname}/../src/public/main.js")
+  
+  robot.router.get "/stacheoverflow/main.css", (req, res) ->
+    res.sendfile path.resolve("#{__dirname}/../src/public/main.css")
 
   robot.catchAll (msg) ->
     moustacheRegex = new RegExp(robot.name + ".*stache me", "i")

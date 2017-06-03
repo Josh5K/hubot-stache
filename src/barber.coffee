@@ -9,17 +9,35 @@ imageMagick = gm.subClass({ imageMagick: true });
 async = require('async')
 _ = require('underscore')
 
+# DEBUGGING
+fakepayload = require('/home/jordan/dev/nubot/payload.json')
+# END DEBUGGING
+
 rekognition = new (AWS.Rekognition)(
   region: 'us-west-2'
   accessKeyId: process.env.HUBOT_AWS_REKOGNITION_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
 
 staches = [ 'stache.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
+
 stachesDir = __dirname + '/templates/'
 
+
+# console.log(robot.brain.get "staches")
+
 class Barber
-  constructor: () ->
+  constructor: (@robot) ->
+    robot = @robot
+    firstBrainLoad = true
+    robot.brain.on 'loaded', ->
+      if firstBrainLoad
+        if ! (robot.brain.get "staches")
+          robot.logger.debug "No staches found in brain, populating..."
+          robot.brain.set "staches", staches
+        robot.logger.debug "Staches found in brain: #{robot.brain.get 'staches'}"
+        firstBrainLoad = false
   moustachify: (fileName, cb) ->
+    robot = @robot
     inputFile = fileName
     outputFile = temp.path({suffix: 'png'})
     faceBytes = fs.readFileSync(inputFile)
@@ -35,13 +53,19 @@ class Barber
           height = value.height
           callback()
         return
+      # (callback) ->
+      #   rekognition.detectFaces params, callback
+      #   return
       (callback) ->
-        rekognition.detectFaces params, callback
-        return
+        return callback(null, fakepayload)
       (payload, callback) ->
+        robot.logger.debug "HERE COMES THE FULL PAYLOAD!"
+        robot.logger.debug JSON.stringify(payload)
         command = []
         command.push 'convert', inputFile
         _.each payload.FaceDetails, (face) ->
+          # console.log "HERE COMES A FACE!"
+          # console.log JSON.stringify(face)
           landmarks = face.Landmarks
           nose = _.findWhere(landmarks, 'Type': 'nose')
           x_nose = nose.X * width
