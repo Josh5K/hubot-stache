@@ -21,7 +21,9 @@ module.exports = (robot) ->
   path = require "path"
   Barber = require('../src/barber')
   barber = new Barber(robot)
-
+  faces = {
+    "1": "jason.jpg"
+  }
 
   robot.router.get "/stacheoverflow", (req, res) ->
     res.sendfile path.resolve("#{__dirname}/../src/public/stacheoverflow.html")
@@ -31,6 +33,25 @@ module.exports = (robot) ->
   
   robot.router.get "/stacheoverflow/main.css", (req, res) ->
     res.sendfile path.resolve("#{__dirname}/../src/public/main.css")
+  
+  robot.router.get "/stacheoverflow/face", (req, res) ->
+    robot.logger.debug "GET face id: #{req.query.id}"
+    filename = faces[req.query.id]
+    if filename
+      basepath = path.resolve("#{__dirname}/../src/public/faces/")
+      res.sendfile "#{basepath}/#{filename}"
+    else 
+      res.send(404, '404 Not found');
+  
+  robot.router.get "/stacheoverflow/stache", (req, res) ->
+    robot.logger.debug "GET stache name: #{req.query.name}"
+    staches = robot.brain.get "staches"
+    if staches.indexOf(req.query.name) > -1
+      basepath = path.resolve("#{__dirname}/../src/public/templates/")
+      res.sendfile "#{basepath}/#{req.query.name}"
+    else 
+      res.send(404, '404 Not found');
+  
 
   robot.catchAll (msg) ->
     moustacheRegex = new RegExp(robot.name + ".*stache me", "i")

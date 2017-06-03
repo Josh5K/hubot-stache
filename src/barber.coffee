@@ -18,9 +18,9 @@ rekognition = new (AWS.Rekognition)(
   accessKeyId: process.env.HUBOT_AWS_REKOGNITION_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
 
-staches = [ 'stache.png', 'mustache_03.png', 'painters-brush.png', 'petite-handlebar.png' ]
-
-stachesDir = __dirname + '/templates/'
+# staches = [ 'original_stache.png', 'mustache_03.png', 'painters_brush.png', 'petite_handlebar.png' ]
+stachesDir = __dirname + '/public/templates/'
+staches = fs.readdirSync(stachesDir)
 
 
 # console.log(robot.brain.get "staches")
@@ -31,9 +31,7 @@ class Barber
     firstBrainLoad = true
     robot.brain.on 'loaded', ->
       if firstBrainLoad
-        if ! (robot.brain.get "staches")
-          robot.logger.debug "No staches found in brain, populating..."
-          robot.brain.set "staches", staches
+        robot.brain.set "staches", staches
         robot.logger.debug "Staches found in brain: #{robot.brain.get 'staches'}"
         firstBrainLoad = false
   moustachify: (fileName, cb) ->

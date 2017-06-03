@@ -11,10 +11,34 @@
 </head>
 
 <body>
-  <div class="container">
+  <div id="wrapper" class="container">
 
     <h1 class="text-center">Stache Overflow</h1>
+    <div class="canvas-wrapper">
+      <canvas id="baseCanvas" width="640" height="480"></canvas>
+      <canvas id="overlayCanvas" width="640" height="480"></canvas>
+    </div>
 
+
+    <script>
+      var baseCanvas = document.getElementById('baseCanvas');
+      var facectx = baseCanvas.getContext('2d');
+      facectx.scale(0.5, 0.5)
+      var face = new Image();
+      face.onload = function () {
+        facectx.drawImage(face, 0, 0);
+      };
+      face.src = '/stacheoverflow/face?id=1';
+
+      var overlayCanvas = document.getElementById('overlayCanvas');
+      var stachectx = overlayCanvas.getContext('2d');
+      stachectx.scale(0.5, 0.5)
+      var stache = new Image();
+      stache.onload = function () {
+        stachectx.drawImage(stache, 0, 0);
+      };
+      stache.src = '/stacheoverflow/stache?name=stache.png';
+    </script>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

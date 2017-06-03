@@ -1,0 +1,15 @@
+div.canvas-wrapper {
+  position: absolute;
+  width: 640px;
+  height: 480px;
+  left: 50%
+}
+#baseCanvas {
+  position: relative;
+  left: -50%;
+}
+#overlayCanvas {
+  position: absolute;
+  top: 0;
+  left: -50%;
+}
