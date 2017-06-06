@@ -2,7 +2,7 @@ $(document).ready(function () {
 
   var testSubject = 1
 
-  var stacheX, stacheY, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
+  var scaleFactor, stacheX, stacheY, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
   var baseCanvas = document.getElementById('baseCanvas');
   var overlayCanvas = document.getElementById('overlayCanvas');
   var facectx = baseCanvas.getContext('2d');
@@ -11,6 +11,12 @@ $(document).ready(function () {
   stachectx.scale(0.5, 0.5)
   var face = new Image();
   var stache = new Image();
+  function drawConfigData() {
+    document.getElementById('config-data').innerHTML  = `convert /home/jordan/dev/nubot/node_modules/hubot-stache/src/faces/jason.jpg \
+     /home/jordan/dev/nubot/node_modules/hubot-stache/src/public/templates/stache.png \
+     -geometry ${Math.floor(stacheWidth)}x+${Math.floor(x_mouthLeft) - $('#h-slider').val()}+${Math.floor(y_mouthLeft) - $('#v-slider').val()} -composite \
+     /tmp/jason.jpg`
+  }
   function resetSliderPositions(x, y) {
     document.getElementById("h-slider").value = x
     document.getElementById("v-slider").value = y
@@ -62,6 +68,7 @@ $(document).ready(function () {
       stache.onload = function () {
         stacheX = x_mouthLeft
         stacheY = y_mouthLeft
+        scaleFactor = 1
         stacheWidth = stache.width
         stacheHeight = stache.height
         stachectx.drawImage(stache, stacheX, stacheY);
@@ -72,14 +79,16 @@ $(document).ready(function () {
   face.src = `/stacheoverflow/face?id=${testSubject}`;
 
   $("#h-slider").on("input change", function () {
-    stacheX = this.value   
+    stacheX = this.value
     stachectx.clearRect(0, 0, 1280, 960)
     stachectx.drawImage(stache, stacheX, stacheY, stacheWidth, stacheHeight);
+    drawConfigData()
   })
   $("#v-slider").on("input change", function () {
     stacheY = this.value
     stachectx.clearRect(0, 0, 1280, 960)
     stachectx.drawImage(stache, stacheX, stacheY, stacheWidth, stacheHeight);
+    drawConfigData()
   })
   $("#s-slider").on("input change", function () {
     scaleFactor = this.value
@@ -91,8 +100,7 @@ $(document).ready(function () {
     resetSliderPositions(stacheX, stacheY)
     stachectx.clearRect(0, 0, 1280, 960)
     stachectx.drawImage(stache, stacheX, stacheY, stacheWidth, stacheHeight);
-
-
+    drawConfigData()
   })
   $("#feature-select").on("input change", function () {
     stachectx.clearRect(0, 0, 1280, 960)
@@ -101,5 +109,6 @@ $(document).ready(function () {
     stacheY = eval(`y_${feature}`)
     resetSliderPositions(stacheX, stacheY)
     stachectx.drawImage(stache, stacheX, stacheY, stacheWidth, stacheHeight);
+    drawConfigData()
   })
 })

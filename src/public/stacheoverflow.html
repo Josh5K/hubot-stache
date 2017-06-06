@@ -19,7 +19,7 @@
       <canvas id="overlayCanvas" width="640" height="480"></canvas>
     </div>
     <div class="row" style="margin-top: 510px">
-      <div class="col-12">
+      <div class="col-4">
         <p>Feature Anchor</p>
         <div class="form-group">
           <select class="form-control" name="" id="feature-select">
@@ -27,6 +27,22 @@
             <option selected="selected" value="mouthLeft">Mouth</option>
             <option value="nose">Nose</option>
           </select>
+        </div>
+      </div>
+      <div class="col-4">
+        <p>Select Accessory</p>
+        <div class="form-group">
+          <select class="form-control" name="" id="stache-select">
+            <option value="eyeLeft">Colonel Mustard</option>
+            <option selected="selected" value="mouthLeft">Yolo</option>
+            <option value="nose">Classic</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-4">
+        <p>Upload Custom</p>
+        <div class="form-group">
+          <input type="file" id="stache-upload">
         </div>
       </div>
     </div>
@@ -46,6 +62,12 @@
       <div class="col-12">
         <p>Vertical Position</p>
         <input id="v-slider" type="range" min="0" max="960" step="1">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Config Data</p>
+        <code id="config-data"></code>
       </div>
     </div>
 
