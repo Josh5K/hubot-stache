@@ -13,3 +13,6 @@ div.canvas-wrapper {
   top: 0;
   left: -50%;
 }
+input[type=range]{
+  width: 100%;
+}

@@ -22,7 +22,10 @@ module.exports = (robot) ->
   Barber = require('../src/barber')
   barber = new Barber(robot)
   faces = {
-    "1": "jason.jpg"
+    "1": {
+      "filename": "jason.jpg",
+      "payload": "jason-payload.json"
+    }
   }
 
   robot.router.get "/stacheoverflow", (req, res) ->
@@ -36,13 +39,22 @@ module.exports = (robot) ->
   
   robot.router.get "/stacheoverflow/face", (req, res) ->
     robot.logger.debug "GET face id: #{req.query.id}"
-    filename = faces[req.query.id]
+    filename = faces[req.query.id]['filename']
     if filename
       basepath = path.resolve("#{__dirname}/../src/public/faces/")
       res.sendfile "#{basepath}/#{filename}"
     else 
       res.send(404, '404 Not found');
   
+  robot.router.get "/stacheoverflow/testdata", (req, res) ->
+    robot.logger.debug "GET testdata id: #{req.query.id}"
+    filename = faces[req.query.id]['payload']
+    if filename
+      basepath = path.resolve("#{__dirname}/../src/public/testdata")
+      res.sendfile "#{basepath}/#{filename}"
+    else 
+      res.send(404, '404 Not found');
+
   robot.router.get "/stacheoverflow/stache", (req, res) ->
     robot.logger.debug "GET stache name: #{req.query.name}"
     staches = robot.brain.get "staches"
@@ -52,6 +64,7 @@ module.exports = (robot) ->
     else 
       res.send(404, '404 Not found');
   
+
 
   robot.catchAll (msg) ->
     moustacheRegex = new RegExp(robot.name + ".*stache me", "i")

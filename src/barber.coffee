@@ -19,21 +19,21 @@ rekognition = new (AWS.Rekognition)(
   secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
 
 # staches = [ 'original_stache.png', 'mustache_03.png', 'painters_brush.png', 'petite_handlebar.png' ]
-stachesDir = __dirname + '/public/templates/'
-staches = fs.readdirSync(stachesDir)
-
 
 # console.log(robot.brain.get "staches")
+stachesDir = __dirname + '/public/templates/'
+staches = fs.readdirSync(stachesDir)
 
 class Barber
   constructor: (@robot) ->
     robot = @robot
+    robot.logger.debug "Found staches in directory '#{stachesDir}': #{staches}"
     firstBrainLoad = true
     robot.brain.on 'loaded', ->
       if firstBrainLoad
-        robot.brain.set "staches", staches
-        robot.logger.debug "Staches found in brain: #{robot.brain.get 'staches'}"
         firstBrainLoad = false
+        robot.brain.set "staches", staches
+        
   moustachify: (fileName, cb) ->
     robot = @robot
     inputFile = fileName

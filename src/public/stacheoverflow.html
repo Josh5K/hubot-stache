@@ -11,38 +11,49 @@
 </head>
 
 <body>
-  <div id="wrapper" class="container">
+  <div class="container">
 
     <h1 class="text-center">Stache Overflow</h1>
     <div class="canvas-wrapper">
       <canvas id="baseCanvas" width="640" height="480"></canvas>
       <canvas id="overlayCanvas" width="640" height="480"></canvas>
     </div>
+    <div class="row" style="margin-top: 510px">
+      <div class="col-12">
+        <p>Feature Anchor</p>
+        <div class="form-group">
+          <select class="form-control" name="" id="feature-select">
+            <option value="eyeLeft">Eye</option>
+            <option selected="selected" value="mouthLeft">Mouth</option>
+            <option value="nose">Nose</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Scale</p>
+        <input id="s-slider" value="1" type="range" min="0" max="5" step="0.01">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Horizontal Position</p>
+        <input id="h-slider" type="range" min="0" max="1280" step="1">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Vertical Position</p>
+        <input id="v-slider" type="range" min="0" max="960" step="1">
+      </div>
+    </div>
 
-
-    <script>
-      var baseCanvas = document.getElementById('baseCanvas');
-      var facectx = baseCanvas.getContext('2d');
-      facectx.scale(0.5, 0.5)
-      var face = new Image();
-      face.onload = function () {
-        facectx.drawImage(face, 0, 0);
-      };
-      face.src = '/stacheoverflow/face?id=1';
-
-      var overlayCanvas = document.getElementById('overlayCanvas');
-      var stachectx = overlayCanvas.getContext('2d');
-      stachectx.scale(0.5, 0.5)
-      var stache = new Image();
-      stache.onload = function () {
-        stachectx.drawImage(stache, 0, 0);
-      };
-      stache.src = '/stacheoverflow/stache?name=stache.png';
-    </script>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
   <script src="/stacheoverflow/main.js"></script>
 </body>
 
