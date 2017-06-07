@@ -22,17 +22,23 @@ rekognition = new (AWS.Rekognition)(
 
 # console.log(robot.brain.get "staches")
 stachesDir = __dirname + '/public/templates/'
-staches = fs.readdirSync(stachesDir)
+# staches = fs.readdirSync(stachesDir)
+staches = undefined
+defaultStaches = require('./public/defaultStaches.json')
 
 class Barber
   constructor: (@robot) ->
     robot = @robot
-    robot.logger.debug "Found staches in directory '#{stachesDir}': #{staches}"
     firstBrainLoad = true
     robot.brain.on 'loaded', ->
       if firstBrainLoad
         firstBrainLoad = false
-        robot.brain.set "staches", staches
+        staches = robot.brain.get "staches"
+        if !staches
+          robot.logger.debug "Setting default staches in brain: #{JSON.stringify(defaultStaches)}"
+          robot.brain.set "staches", defaultStaches
+        else
+          robot.logger.debug "Found staches in brain: #{JSON.stringify(staches)}"
         
   moustachify: (fileName, cb) ->
     robot = @robot
@@ -80,7 +86,7 @@ class Barber
           x_geometry = x_mouthLeft + stache_x_offset
           stache_y_offset = (y_nose - y_mouthLeft) / 2
           y_geometry = y_mouthLeft + stache_y_offset
-          stacheFile = stachesDir + staches[Math.floor(Math.random() * staches.length)]
+          stacheFile = stachesDir + staches[Math.floor(Math.random() * staches.length)]['fileName']
           command.push stacheFile, '-geometry', Math.floor(stacheWidth) + 'x+' + Math.floor(x_geometry) + '+' + Math.floor(y_geometry), '-composite'
           return
         command.push outputFile

@@ -2,7 +2,7 @@ $(document).ready(function () {
 
   var testSubject = 1
 
-  var scaleFactor, stacheX, stacheY, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
+  var configData, stacheOffsetX, stacheOffsetY, feature, scaleFactor, stacheX, stacheY, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
   var baseCanvas = document.getElementById('baseCanvas');
   var overlayCanvas = document.getElementById('overlayCanvas');
   var facectx = baseCanvas.getContext('2d');
@@ -12,10 +12,28 @@ $(document).ready(function () {
   var face = new Image();
   var stache = new Image();
   function drawConfigData() {
-    document.getElementById('config-data').innerHTML  = `convert /home/jordan/dev/nubot/node_modules/hubot-stache/src/faces/jason.jpg \
-     /home/jordan/dev/nubot/node_modules/hubot-stache/src/public/templates/stache.png \
-     -geometry ${Math.floor(stacheWidth)}x+${Math.floor(x_mouthLeft) - $('#h-slider').val()}+${Math.floor(y_mouthLeft) - $('#v-slider').val()} -composite \
-     /tmp/jason.jpg`
+     // -geometry (stache.width * scaleFactor)x+(x_mouthLeft)
+     
+     stacheOffsetX = Math.floor(stacheX - eval(`x_${feature}`))
+     stacheOffsetY = Math.floor(stacheY - eval(`y_${feature}`))
+     console.log(`Stache X position ${stacheX}`) //Unknown
+     console.log(`Stache Y position ${stacheY}`) //Unknown
+     console.log(`Slider X value ${document.getElementById("h-slider").value}`) //N/A
+     console.log(`Slider Y value ${document.getElementById("v-slider").value}`) //N/A
+     console.log(`Feature X position ${eval(`x_${feature}`)}`) //known
+     console.log(`Feature Y position ${eval(`y_${feature}`)}`) //known
+     console.log(`Stache X Offset ${stacheOffsetX}`) //known
+     console.log(`Stache Y Offset ${stacheOffsetY}`) //known
+     console.log(`Formula: (stache.width * scaleFactor)x+(stacheOffsetX + x_feature)+(stacheOffsetY + y_feature)`)
+     console.log(`---`)
+
+    // document.getElementById('config-data').innerHTML  = `convert /home/jordan/dev/nubot/node_modules/hubot-stache/src/public/faces/jason.jpg \
+    //  /home/jordan/dev/nubot/node_modules/hubot-stache/src/public/templates/stache.png \
+    //  -geometry ${Math.floor(stache.width * scaleFactor)}x+${Math.floor(stacheOffsetX + eval(`x_${feature}`))}+${Math.floor(stacheOffsetY + eval(`y_${feature}`))} -composite \
+    //  /tmp/jason.jpg`
+     configData = { "name": "stache.png", "featureAnchor": feature, "offsetX": stacheOffsetX, "offsetY": stacheOffsetY, "scaleFactor": scaleFactor }
+     document.getElementById('config-data').innerHTML = JSON.stringify(configData)
+
   }
   function resetSliderPositions(x, y) {
     document.getElementById("h-slider").value = x
@@ -69,6 +87,7 @@ $(document).ready(function () {
         stacheX = x_mouthLeft
         stacheY = y_mouthLeft
         scaleFactor = 1
+        feature = $("#feature-select").val()
         stacheWidth = stache.width
         stacheHeight = stache.height
         stachectx.drawImage(stache, stacheX, stacheY);
@@ -94,7 +113,7 @@ $(document).ready(function () {
     scaleFactor = this.value
     stacheWidth = stache.width * scaleFactor
     stacheHeight = stache.height * scaleFactor
-    var feature = $('#feature-select').val()
+    feature = $('#feature-select').val()
     stacheX = eval(`x_${feature}`)
     stacheY = eval(`y_${feature}`)
     resetSliderPositions(stacheX, stacheY)
@@ -104,7 +123,7 @@ $(document).ready(function () {
   })
   $("#feature-select").on("input change", function () {
     stachectx.clearRect(0, 0, 1280, 960)
-    var feature = this.value
+    feature = this.value
     stacheX = eval(`x_${feature}`)
     stacheY = eval(`y_${feature}`)
     resetSliderPositions(stacheX, stacheY)

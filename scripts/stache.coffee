@@ -16,11 +16,15 @@
 #
 # Author:
 #   Neufeldtech https://github.com/neufeldtech
+_ = require('underscore')
+defaultStaches = require('../src/public/defaultStaches.json')
+
 module.exports = (robot) ->
   fs = require "fs"
   path = require "path"
   Barber = require('../src/barber')
   barber = new Barber(robot)
+  staches = undefined
   faces = {
     "1": {
       "filename": "jason.jpg",
@@ -45,6 +49,36 @@ module.exports = (robot) ->
       res.sendfile "#{basepath}/#{filename}"
     else 
       res.send(404, '404 Not found');
+
+  robot.router.get "/stacheoverflow/stache", (req, res) ->
+    robot.logger.debug "GET stache name: #{req.query.id}"
+    staches = robot.brain.get "staches"
+    basepath = path.resolve("#{__dirname}/../src/public/templates/")
+    stache = _.findWhere(staches, 'id': req.query.id)
+    if stache
+      res.sendfile("#{basepath}/#{stache.fileName}")
+    else
+      res.send(404, '404 not found')
+  
+  robot.router.get "/stacheoverflow/config", (req, res) ->
+    if ! req.query.id 
+      robot.logger.debug "GET config id: #{req.query.id}"
+      staches = robot.brain.get "staches"
+      res.json(staches)
+    else
+      robot.logger.debug "GET all config objects"
+      stache = _.findWhere(staches, 'id': req.query.id)
+      if !stache
+        res.send(404, '404 not found')
+      else
+        res.json(stache)
+  
+  robot.router.get "/stacheoverflow/config/flush", (req, res) ->
+    robot.brain.remove "staches"
+    res.send('Reset all stache config to defaults')
+    robot.brain.set "staches", defaultStaches
+    robot.logger.debug "Resetting all stache config to default"
+
   
   robot.router.get "/stacheoverflow/testdata", (req, res) ->
     robot.logger.debug "GET testdata id: #{req.query.id}"
@@ -55,15 +89,6 @@ module.exports = (robot) ->
     else 
       res.send(404, '404 Not found');
 
-  robot.router.get "/stacheoverflow/stache", (req, res) ->
-    robot.logger.debug "GET stache name: #{req.query.name}"
-    staches = robot.brain.get "staches"
-    if staches.indexOf(req.query.name) > -1
-      basepath = path.resolve("#{__dirname}/../src/public/templates/")
-      res.sendfile "#{basepath}/#{req.query.name}"
-    else 
-      res.send(404, '404 Not found');
-  
 
 
   robot.catchAll (msg) ->
