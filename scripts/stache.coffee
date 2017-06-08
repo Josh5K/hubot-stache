@@ -70,7 +70,11 @@ module.exports = (robot) ->
       staches = robot.brain.get "staches"
       staches.push({
       "id": shortid.generate(),
-      "fileName": req.files.image['originalFilename']
+      "fileName": req.files.image['originalFilename'],
+      "featureAnchor": "mouthLeft",
+      "offsetX": 0,
+      "offsetY": 0,
+      "scaleFactor": 1
       })
       robot.brain.set "staches", staches
       robot.logger.debug "Current staches: #{JSON.stringify(staches)}"

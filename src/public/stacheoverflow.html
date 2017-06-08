@@ -143,9 +143,12 @@
       document.getElementById('config-data').innerHTML = JSON.stringify(configData)
     }
 
-    function resetSliderPositions(x, y) {
+    function resetSliderPositions(x, y, s) {
       document.getElementById("h-slider").value = x
       document.getElementById("v-slider").value = y
+      if (s) {
+        document.getElementById("s-slider").value = s
+      }
     }
     function saveProfile() {
       console.log(`Attempting to save stache profile: ${JSON.stringify(configData)}`)
@@ -197,6 +200,19 @@
     }
     populateStacheSelector()
 
+    function positionCurrentStache() {
+      $.getJSON(`/stacheoverflow/config/stache/${document.getElementById('stache-select').value}`, function (data) {
+        resetSliderPositions(Math.floor(eval(`x_${feature}`) + data.offsetX), Math.floor(eval(`y_${feature}`) + data.offsetY), data.scaleFactor)
+        stacheX = eval(`x_${feature}`) + data.offsetX
+        console.log(stacheX, stacheY, data.offsetX, data.offsetY)
+        stacheY = eval(`y_${feature}`) + data.offsetY
+        stachectx.clearRect(0, 0, 1280, 960)
+        stacheWidth = stache.width * data.scaleFactor
+        stacheHeight = stache.height * data.scaleFactor
+
+        stachectx.drawImage(stache, stacheX, stacheY, stacheWidth, stacheHeight);
+      })
+    }
 
     face.onload = function () {
       facectx.drawImage(face, 0, 0);
@@ -251,6 +267,7 @@
           stacheHeight = stache.height
           stachectx.drawImage(stache, stacheX, stacheY);
           drawConfigData() //Draw the init config data after both images have loaded
+          positionCurrentStache()
         };
         stache.src = `/stacheoverflow/image/stache/${document.getElementById('stache-select').value}`
       }); //end get testdata json
@@ -298,9 +315,9 @@
       feature = $("#feature-select").val()
       stacheX = eval(`x_${feature}`)
       stacheY = eval(`y_${feature}`)
-      resetSliderPositions(stacheX, stacheY)
-      document.getElementById("s-slider").value = 1 // also reset the scale slider when changing staches
+      resetSliderPositions(stacheX, stacheY, 1)
       drawConfigData()
+      positionCurrentStache()
     })
   </script>
 </body>
