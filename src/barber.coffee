@@ -24,7 +24,8 @@ rekognition = new (AWS.Rekognition)(
 stachesDir = __dirname + '/public/templates/'
 # staches = fs.readdirSync(stachesDir)
 staches = undefined
-defaultStaches = require('./public/defaultStaches.json')
+defaultStaches = require('./public/config/stache/default.json')
+defaultFaces = require('./public/config/face/default.json')
 
 class Barber
   constructor: (@robot) ->
@@ -33,6 +34,7 @@ class Barber
     robot.brain.on 'loaded', ->
       if firstBrainLoad
         firstBrainLoad = false
+        robot.brain.set "faces", defaultFaces # load default faces into brain
         staches = robot.brain.get "staches"
         if !staches
           robot.logger.debug "Setting default staches in brain: #{JSON.stringify(defaultStaches)}"
