@@ -58,9 +58,13 @@ module.exports = (robot) ->
 
   # POST /stacheoverflow/image/stache - create a stache (must send as multipart upload with file as the 'image' parameter)
   robot.router.post "/stacheoverflow/image/stache", (req, res) ->
+    pattern = new RegExp(/^image\/(png|jpg|jpe?g|gif|bmp|tiff)$/)
     if ! req.files || ! req.files.image
       res.send(400, 'No file sent with image key')
+    else if !pattern.test(req.files.image.type)
+      res.send(400, 'Unsupported filetype')
     else
+      # robot.logger.debug req.files.image
       fs.createReadStream(req.files.image['path']).pipe(fs.createWriteStream("#{stacheImageDirectory}/#{req.files.image['originalFilename']}"));
       robot.logger.debug "Wrote new file to #{stacheImageDirectory}/#{req.files.image['originalFilename']}"
       staches = robot.brain.get "staches"

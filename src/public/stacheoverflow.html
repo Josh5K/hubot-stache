@@ -65,7 +65,9 @@
           <small>Should be a unique, descriptive filename)</small>
         </p>
         <div class="form-group">
-          <input type="file" id="stache-upload">
+          <input type="file" id="stache-upload" accept="image/png,image/x-png,image/gif,image/jpeg">
+          <br><br>
+          <button type="button" onclick="uploadStache()" class="btn btn-primary">Upload</button>
         </div>
       </div>
       <div class="col-3">
@@ -146,7 +148,37 @@
       document.getElementById("v-slider").value = y
     }
     function saveProfile() {
-      console.log(`Saving stache profile: ${JSON.stringify(configData)}`)
+      console.log(`Attempting to save stache profile: ${JSON.stringify(configData)}`)
+      $.ajax("/stacheoverflow/config/stache", {
+        data: JSON.stringify(configData),
+        contentType: "application/json",
+        type: "POST"
+      }).fail(function (data, status) {
+        console.error(data, status)
+        alert(`Error saving profile: ${data.status} ${data.statusText}`)
+      }).done(function (data, status) {
+        alert('Profile Saved!')
+      })
+    }
+    function uploadStache() {
+      console.log(`Attempting to upload stache`)
+      var data = new FormData();
+      $.each($('#stache-upload')[0].files, function (i, file) {
+        data.append('image', file);
+      });
+      $.ajax({
+        url: '/stacheoverflow/image/stache',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST'
+      }).fail(function (data, status) {
+        console.error(data, status)
+        alert(`Error uploading stache: ${data.status} ${data.statusText}`)
+      }).done(function (data, status) {
+        alert('Stache Uploaded!')
+      })
     }
     // Populate Dropdown Array with staches
     function populateStacheSelector() {
