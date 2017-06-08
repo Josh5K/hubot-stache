@@ -74,7 +74,7 @@ module.exports = (robot) ->
       "featureAnchor": "mouthLeft",
       "offsetX": 0,
       "offsetY": 0,
-      "scaleFactor": 1
+      "scaleFactor": "1"
       })
       robot.brain.set "staches", staches
       robot.logger.debug "Current staches: #{JSON.stringify(staches)}"

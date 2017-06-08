@@ -66,8 +66,7 @@
         </p>
         <div class="form-group">
           <input type="file" id="stache-upload" accept="image/png,image/x-png,image/gif,image/jpeg">
-          <br><br>
-          <button type="button" onclick="uploadStache()" class="btn btn-primary">Upload</button>
+          <button type="button" onclick="uploadStache()" class="btn btn-primary mt-3">Upload</button>
         </div>
       </div>
       <div class="col-3">
@@ -202,10 +201,11 @@
 
     function positionCurrentStache() {
       $.getJSON(`/stacheoverflow/config/stache/${document.getElementById('stache-select').value}`, function (data) {
-        resetSliderPositions(Math.floor(eval(`x_${feature}`) + data.offsetX), Math.floor(eval(`y_${feature}`) + data.offsetY), data.scaleFactor)
-        stacheX = eval(`x_${feature}`) + data.offsetX
+        resetSliderPositions(Math.floor(eval(`x_${data.featureAnchor}`) + data.offsetX), Math.floor(eval(`y_${data.featureAnchor}`) + data.offsetY), data.scaleFactor)
+        document.getElementById('feature-select').value = data.featureAnchor
+        stacheX = eval(`x_${data.featureAnchor}`) + data.offsetX
         console.log(stacheX, stacheY, data.offsetX, data.offsetY)
-        stacheY = eval(`y_${feature}`) + data.offsetY
+        stacheY = eval(`y_${data.featureAnchor}`) + data.offsetY
         stachectx.clearRect(0, 0, 1280, 960)
         stacheWidth = stache.width * data.scaleFactor
         stacheHeight = stache.height * data.scaleFactor
