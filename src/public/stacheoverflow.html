@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Title</title>
+  <title>Stache Overflow</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
   <style>
     div.canvas-wrapper {
@@ -121,7 +121,7 @@
     var stache = new Image();
     function drawConfigData() {
       // -geometry (stache.width * scaleFactor)x+(x_mouthLeft)
-
+      feature = $("#feature-select").val()
       stacheOffsetX = Math.floor(stacheX - eval(`x_${feature}`))
       stacheOffsetY = Math.floor(stacheY - eval(`y_${feature}`))
       // console.log(`Stache X position ${stacheX}`) //Unknown
@@ -178,12 +178,14 @@
         alert(`Error uploading stache: ${data.status} ${data.statusText}`)
       }).done(function (data, status) {
         alert('Stache Uploaded!')
+        populateStacheSelector()
       })
     }
     // Populate Dropdown Array with staches
     function populateStacheSelector() {
       $.getJSON('/stacheoverflow/config/stache', function (options) {
         var select = document.getElementById('stache-select')
+        $(select).empty()
         for (var i = 0; i < options.length; i++) {
           var opt = options[i];
           var el = document.createElement("option");
@@ -194,6 +196,7 @@
       })
     }
     populateStacheSelector()
+
 
     face.onload = function () {
       facectx.drawImage(face, 0, 0);
@@ -292,6 +295,7 @@
     $("#stache-select").on("input change", function () {
       stache.src = `/stacheoverflow/image/stache/${this.value}`
       stachectx.clearRect(0, 0, 1280, 960)
+      feature = $("#feature-select").val()
       stacheX = eval(`x_${feature}`)
       stacheY = eval(`y_${feature}`)
       resetSliderPositions(stacheX, stacheY)

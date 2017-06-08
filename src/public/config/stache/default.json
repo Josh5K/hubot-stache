@@ -1,18 +1,42 @@
 [
   {
-    "id": "HJMOmeHfW",
-    "fileName": "stache.png",
+    "id": "ryIAzLLGW",
+    "fileName": "skinny-stache.png",
     "featureAnchor": "mouthLeft",
-    "offsetX": 0,
-    "offsetY": 0,
-    "scaleFactor": "0.87"
+    "offsetX": -43,
+    "offsetY": -24,
+    "scaleFactor": "0.3"
   },
   {
-    "id": "ryGOSzIzZ",
+    "id": "BkPemULfW",
+    "fileName": "classic-stache.png",
+    "featureAnchor": "mouthLeft",
+    "offsetX": -35,
+    "offsetY": -18,
+    "scaleFactor": "0.21"
+  },
+  {
+    "id": "B1r-m8UG-",
+    "fileName": "handlebar-stache.png",
+    "featureAnchor": "mouthLeft",
+    "offsetX": -45,
+    "offsetY": -30,
+    "scaleFactor": "0.25"
+  },
+  {
+    "id": "rJcZQ8IM-",
     "fileName": "painters-brush.png",
     "featureAnchor": "mouthLeft",
-    "offsetX": 0,
-    "offsetY": 0,
-    "scaleFactor": "0.87"
+    "offsetX": -26,
+    "offsetY": -21,
+    "scaleFactor": "0.21"
+  },
+  {
+    "id": "SJlMQUUGZ",
+    "fileName": "aviators-classic.png",
+    "featureAnchor": "mouthLeft",
+    "offsetX": -62,
+    "offsetY": -133,
+    "scaleFactor": "0.09"
   }
 ]
