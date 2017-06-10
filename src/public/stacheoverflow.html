@@ -42,7 +42,7 @@
       <canvas id="overlayCanvas" width="640" height="480"></canvas>
     </div>
     <div class="row" style="margin-top: 510px">
-      <div class="col-3">
+      <div class="col-6">
         <p>Type</p>
         <div class="form-group">
           <select class="form-control" name="" id="feature-select">
@@ -53,52 +53,30 @@
           </select>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-6">
         <p>Select Item</p>
         <div class="form-group">
           <select class="form-control" name="" id="stache-select">
           </select>
         </div>
       </div>
-      <div class="col-3">
+    </div>
+    <div class="row">
+      <div class="col-6">
         <p>
           Upload Custom<br>
-          <small>Should be a unique, descriptive filename)</small>
+          <small>Should be a unique, descriptive filename. For best results, ensure your image is tightly cropped and has a transparent background.</small>
         </p>
         <div class="form-group">
           <input type="file" id="stache-upload" accept="image/png,image/x-png,image/gif,image/jpeg">
           <button type="button" onclick="uploadStache()" class="btn btn-primary mt-3">Upload</button>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-6">
         <p>Save Profile<br>
           <small>This will save the current config for this stache so that you can use it with hubot-stache</small>
         </p>
         <button type="button" onclick="saveProfile()" class="btn btn-success">Save</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <p>Scale</p>
-        <input id="s-slider" value="1" type="range" min="0" max="5" step="0.01">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <p>Horizontal Offset</p>
-        <input id="h-slider" type="range" min="0" max="1280" step="1">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <p>Vertical Offset</p>
-        <input id="v-slider" type="range" min="0" max="960" step="1">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <p>Config Data</p>
-        <code id="config-data"></code>
       </div>
     </div>
 
@@ -112,8 +90,8 @@
     var testSubject = "BylWNpufb" // Jordan med
     var testSubject = "H1BbSf8zZ" // Jason
     var testSubject = "H1flNT_Mb" // Jordan lg
-    
-    
+
+
     var faceLeft, faceTop, faceWidth, faceHeight, configData, stacheOffsetX, stacheOffsetY, feature, scaleFactor, x_geometry, y_geometry, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
     var baseCanvas = document.getElementById('baseCanvas');
     var overlayCanvas = document.getElementById('overlayCanvas');
