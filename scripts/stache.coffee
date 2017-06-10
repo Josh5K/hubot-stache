@@ -149,13 +149,19 @@ module.exports = (robot) ->
       res.send(404, "Stache not found")
 
   robot.catchAll (msg) ->
-    moustacheRegex = new RegExp(robot.name + ".*stache me", "i")
+    moustacheRegex = new RegExp(robot.name + ".*(stache|hat|glasses) me", "i")
+    # featureTypeRegex = /.*(stache|hat|glasses).*/i
+    # console.log(featureTypeRegex)
+    # console.log(msg.message.text)
+    # featureType = featureTypeRegex.exec(msg.message.txt)
+    # console.log(featureType)
+    featureType = "glasses"
     isRequestToBeMoustachified = moustacheRegex.test(msg.message.text)
     if /file_comment|file_share/i.test(msg.message.subtype) and /image/i.test(msg.message.file.mimetype) and isRequestToBeMoustachified
       barber.downloadSlackFile msg.message.file.url_private_download, (err, attachmentFilename) ->
         if err
           return robot.messageRoom msg.message.file.channels[0], "I had an error trying to moustachify you :sob: #{err}"
-        barber.moustachify attachmentFilename, (err, moustacheFilename) ->
+        barber.moustachify attachmentFilename, featureType, (err, moustacheFilename) ->
           if err
             return robot.messageRoom msg.message.file.channels[0], "I had an error trying to moustachify you :sob: #{err}"
           contentOpts =

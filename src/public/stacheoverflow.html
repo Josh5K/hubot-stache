@@ -56,7 +56,7 @@
       <div class="col-6">
         <p>Select Item</p>
         <div class="form-group">
-          <select class="form-control" name="" id="stache-select">
+          <select class="form-control" id="stache-select">
           </select>
         </div>
       </div>
@@ -96,7 +96,8 @@
     // var testSubject = "SyoyIzIMW" // Jordan sm
     // var testSubject = "H1flNT_Mb" // Jordan lg
     var testSubject = "BylWNpufb" // Jordan med
-    var faceLeft, faceTop, faceWidth, faceHeight, configData, stacheOffsetX, stacheOffsetY, feature, scaleFactor, x_geometry, y_geometry, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
+
+    var faceLeft, faceTop, faceWidth, faceHeight, configData, feature, x_geometry, y_geometry, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
     var baseCanvas = document.getElementById('baseCanvas');
     var overlayCanvas = document.getElementById('overlayCanvas');
     var facectx = baseCanvas.getContext('2d');
@@ -189,7 +190,6 @@
       stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
     }
     function positionGlasses() {
-      // mouthWidth = x_mouthRight - x_mouthLeft
       stacheWidth = faceWidth * 0.9
       // If you are just doing server side, you need not worry about stache Height
       stacheHeight = stache.height * (faceWidth / stache.width)
@@ -200,7 +200,6 @@
       stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
     }
     function positionMask() {
-      // mouthWidth = x_mouthRight - x_mouthLeft
       stacheWidth = faceWidth * 0.9
       // If you are just doing server side, you need not worry about stache Height
       stacheHeight = stache.height * (faceWidth / stache.width)
@@ -211,13 +210,11 @@
       stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
     }
     function positionHat() {
-      // mouthWidth = x_mouthRight - x_mouthLeft
       stacheWidth = faceWidth
       // If you are just doing server side, you need not worry about stache Height
       stacheHeight = stache.height * (faceWidth / stache.width)
       stache_x_offset = (faceWidth - stacheWidth) / 2
       x_geometry = faceLeft - stache_x_offset
-      // stache_y_offset = (y_eyeLeft) * 2
       y_geometry = faceTop - (stacheHeight * 0.85)
       stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
     }
@@ -245,7 +242,7 @@
       facectx.drawImage(face, 0, 0);
       $.getJSON(`/stacheoverflow/config/face/${testSubject}`, function (response) {
 
-        drawLandmarks = false
+        drawLandmarks = true
 
         facedata = response.data.FaceDetails[0]
         facectx.fillStyle = "#FFFF00";
@@ -303,12 +300,7 @@
         if (drawLandmarks) facectx.fillRect(x_eyeRight, y_eyeRight, 3, 3);
 
         stache.onload = function () {
-          // // DEBUG
-          // document.getElementById('stache-select').value = "B1r79yYf-"
-          // // END DEBUG
           render()
-
-
         };
         stache.src = `/stacheoverflow/image/stache/${document.getElementById('stache-select').value}`
       }); //end get testdata json

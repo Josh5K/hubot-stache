@@ -42,7 +42,7 @@ class Barber
         else
           robot.logger.debug "Found staches in brain: #{JSON.stringify(staches)}"
         
-  moustachify: (fileName, cb) ->
+  moustachify: (fileName, featureType, cb) ->
     robot = @robot
     inputFile = fileName
     outputFile = temp.path({suffix: 'png'})
@@ -73,22 +73,64 @@ class Barber
           # console.log "HERE COMES A FACE!"
           # console.log JSON.stringify(face)
           landmarks = face.Landmarks
+          
+          eyeLeft = _.findWhere(landmarks, 'Type': 'eyeLeft')
+          x_eyeLeft = eyeLeft.X * width
+          y_eyeLeft = eyeLeft.Y * height
+          
+          eyeRight = _.findWhere(landmarks, 'Type': 'eyeRight')
+          x_eyeRight = eyeRight.X * width
+          y_eyeRight = eyeRight.Y * height
+          
           nose = _.findWhere(landmarks, 'Type': 'nose')
           x_nose = nose.X * width
           y_nose = nose.Y * height
+          
           mouthLeft = _.findWhere(landmarks, 'Type': 'mouthLeft')
           x_mouthLeft = mouthLeft.X * width
           y_mouthLeft = mouthLeft.Y * height
+          
           mouthRight = _.findWhere(landmarks, 'Type': 'mouthRight')
           x_mouthRight = mouthRight.X * width
           y_mouthRight = mouthRight.Y * height
+          
           mouthWidth = x_mouthRight - x_mouthLeft
-          stacheWidth = mouthWidth * 1.6
-          stache_x_offset = (mouthWidth - stacheWidth) / 2
-          x_geometry = x_mouthLeft + stache_x_offset
-          stache_y_offset = (y_nose - y_mouthLeft) / 2
-          y_geometry = y_mouthLeft + stache_y_offset
-          stacheFile = stachesDir + staches[Math.floor(Math.random() * staches.length)]['fileName']
+         
+          boundingBox = face.BoundingBox
+          faceWidth = boundingBox.Width * width
+          faceHeight = boundingBox.Height * height
+          faceLeft = boundingBox.Left * width
+          faceTop = boundingBox.Top * height
+         
+          switch featureType
+            when 'glasses'
+              glassesStaches = _.filter staches, (s) ->
+                s.featureType == "glasses"
+              stacheFile = stachesDir + glassesStaches[Math.floor(Math.random() * glassesStaches.length)]['fileName']
+              stacheWidth = faceWidth * 0.9
+              stache_x_offset = (faceWidth - stacheWidth) * 2.75
+              x_geometry = x_eyeLeft - stache_x_offset
+              stache_y_offset = (y_eyeLeft - y_nose) / 1.75
+              y_geometry = y_eyeLeft + stache_y_offset
+            when 'hat'
+              hatStaches = _.filter staches, (s) ->
+                s.featureType == "hat"
+              stacheFile = stachesDir + hatStaches[Math.floor(Math.random() * hatStaches.length)]['fileName']
+              stacheWidth = faceWidth
+              stacheHeight = faceHeight * 0.75
+              stache_x_offset = (faceWidth - stacheWidth) / 2
+              x_geometry = faceLeft - stache_x_offset
+              y_geometry = faceTop - (stacheHeight * 0.85)
+            else 
+              # default is stache
+              stacheStaches = _.filter staches, (s) ->
+                s.featureType == "stache"
+              stacheFile = stachesDir + stacheStaches[Math.floor(Math.random() * stacheStaches.length)]['fileName']
+              stacheWidth = mouthWidth * 1.7
+              stache_x_offset = (mouthWidth - stacheWidth) / 2
+              x_geometry = x_mouthLeft + stache_x_offset
+              stache_y_offset = (y_nose - y_mouthLeft) / 2
+              y_geometry = y_mouthLeft + stache_y_offset
           command.push stacheFile, '-geometry', Math.floor(stacheWidth) + 'x+' + Math.floor(x_geometry) + '+' + Math.floor(y_geometry), '-composite'
           return
         command.push outputFile
