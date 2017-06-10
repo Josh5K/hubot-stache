@@ -71,7 +71,7 @@ module.exports = (robot) ->
       staches.push({
       "id": shortid.generate(),
       "fileName": req.files.image['originalFilename'],
-      "featureAnchor": "mouthLeft",
+      "featureType": "mouthLeft",
       "offsetX": 0,
       "offsetY": 0,
       "scaleFactor": "1"
