@@ -71,10 +71,7 @@ module.exports = (robot) ->
       staches.push({
       "id": shortid.generate(),
       "fileName": req.files.image['originalFilename'],
-      "featureType": "mouthLeft",
-      "offsetX": 0,
-      "offsetY": 0,
-      "scaleFactor": "1"
+      "featureType": "stache"
       })
       robot.brain.set "staches", staches
       robot.logger.debug "Current staches: #{JSON.stringify(staches)}"

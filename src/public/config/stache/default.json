@@ -23,5 +23,30 @@
     "id": "SJlMQUUGZ",
     "fileName": "aviators-classic.png",
     "featureType": "glasses"
+  },
+  {
+    "id": "SyCczlYMZ",
+    "fileName": "deal-glasses.png",
+    "featureType": "glasses"
+  },
+  {
+    "id": "rJgPXxFM-",
+    "fileName": "tophat.png",
+    "featureType": "hat"
+  },
+  {
+    "id": "rJuANeYzW",
+    "fileName": "birthday-hat.png",
+    "featureType": "hat"
+  },
+  {
+    "id": "By4HultMb",
+    "fileName": "lips.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "Hy9kqetfZ",
+    "fileName": "curlybrown.png",
+    "featureType": "stache"
   }
 ]

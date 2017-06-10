@@ -48,7 +48,7 @@
           <select class="form-control" name="" id="feature-select">
             <option value="glasses">Glasses</option>
             <option selected="selected" value="stache">Moustache</option>
-            <option value="mask">Mask</option>
+            <!--<option value="mask">Mask</option>-->
             <option value="hat">Hat</option>
           </select>
         </div>
@@ -65,18 +65,24 @@
       <div class="col-6">
         <p>
           Upload Custom<br>
-          <small>Should be a unique, descriptive filename. For best results, ensure your image is tightly cropped and has a transparent background.</small>
+          <small>Should be a unique, descriptive filename. For best results, has a transparent background.</small>
         </p>
         <div class="form-group">
           <input type="file" id="stache-upload" accept="image/png,image/x-png,image/gif,image/jpeg">
           <button type="button" onclick="uploadStache()" class="btn btn-primary mt-3">Upload</button>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-3">
         <p>Save Profile<br>
           <small>This will save the current config for this stache so that you can use it with hubot-stache</small>
         </p>
         <button type="button" onclick="saveProfile()" class="btn btn-success">Save</button>
+      </div>
+      <div class="col-3">
+        <p>Delete Profile<br>
+          <small>This will delete the current config for this stache. It will no longer be available.</small>
+        </p>
+        <button type="button" onclick="deleteProfile($('#stache-select').val(), $('#stache-select option:selected').html())" class="btn btn-danger">Delete</button>
       </div>
     </div>
 
@@ -86,12 +92,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
   <script src="http://underscorejs.org/underscore-min.js"></script>
   <script>
-    var testSubject = "SyoyIzIMW" // Jordan sm
+    
+    // var testSubject = "SyoyIzIMW" // Jordan sm
+    // var testSubject = "H1flNT_Mb" // Jordan lg
     var testSubject = "BylWNpufb" // Jordan med
-    var testSubject = "H1BbSf8zZ" // Jason
-    var testSubject = "H1flNT_Mb" // Jordan lg
-
-
     var faceLeft, faceTop, faceWidth, faceHeight, configData, stacheOffsetX, stacheOffsetY, feature, scaleFactor, x_geometry, y_geometry, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
     var baseCanvas = document.getElementById('baseCanvas');
     var overlayCanvas = document.getElementById('overlayCanvas');
@@ -115,6 +119,26 @@
         alert('Profile Saved!')
       })
     }
+    function deleteProfile(id, name) {
+      var answer = confirm(`Are you sure you want to delete ${name}?`)
+      console.log(answer)
+      if (answer) {
+        $.ajax(`/stacheoverflow/config/stache/${id}`, {
+          data: JSON.stringify(configData),
+          type: "DELETE"
+        }).fail(function (data, status) {
+          console.error(data, status)
+          alert(`Error deleting profile: ${data.status} ${data.statusText}`)
+        }).done(function (data, status) {
+          alert("Stache deleted!")
+          location.reload();
+        })
+      }
+    }
+    function updateConfigData() {
+      configData = { "id": document.getElementById('stache-select').value, "fileName": $('#stache-select option:selected').html(), "featureType": feature = $('#feature-select').val() }
+      console.log(`ConfigData: ${JSON.stringify(configData)}`)
+    }
     function uploadStache() {
       console.log(`Attempting to upload stache`)
       var data = new FormData();
@@ -133,7 +157,7 @@
         alert(`Error uploading stache: ${data.status} ${data.statusText}`)
       }).done(function (data, status) {
         alert('Stache Uploaded!')
-        populateStacheSelector()
+        location.reload()
       })
     }
     // Populate Dropdown Array with staches
@@ -175,21 +199,47 @@
       y_geometry = y_eyeLeft + stache_y_offset
       stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
     }
-
+    function positionMask() {
+      // mouthWidth = x_mouthRight - x_mouthLeft
+      stacheWidth = faceWidth * 0.9
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (faceWidth / stache.width)
+      stache_x_offset = (faceWidth - stacheWidth) * 2.75
+      x_geometry = x_eyeLeft - stache_x_offset
+      stache_y_offset = (y_eyeLeft - y_nose) * 2
+      y_geometry = y_eyeLeft + stache_y_offset
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
+    function positionHat() {
+      // mouthWidth = x_mouthRight - x_mouthLeft
+      stacheWidth = faceWidth
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (faceWidth / stache.width)
+      stache_x_offset = (faceWidth - stacheWidth) / 2
+      x_geometry = faceLeft - stache_x_offset
+      // stache_y_offset = (y_eyeLeft) * 2
+      y_geometry = faceTop - (stacheHeight * 0.85)
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
     function render() {
       feature = $('#feature-select').val()
       switch (feature) {
         case "stache":
           positionStache()
-          console.log('positioned stache')
           break;
         case "glasses":
           positionGlasses()
-          console.log('positioned glasses')
+          break;
+        case "mask":
+          positionMask()
+          break;
+        case "hat":
+          positionHat()
           break;
         default:
           console.log("I don't know how to position that")
       }
+      updateConfigData()
     }
     face.onload = function () {
       facectx.drawImage(face, 0, 0);
@@ -253,7 +303,12 @@
         if (drawLandmarks) facectx.fillRect(x_eyeRight, y_eyeRight, 3, 3);
 
         stache.onload = function () {
+          // // DEBUG
+          // document.getElementById('stache-select').value = "B1r79yYf-"
+          // // END DEBUG
           render()
+
+
         };
         stache.src = `/stacheoverflow/image/stache/${document.getElementById('stache-select').value}`
       }); //end get testdata json
