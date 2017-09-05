@@ -9,7 +9,9 @@
 #  HUBOT_SLACK_TOKEN - Your hubot Slack token (used for uploading attachments to Slack)
 #
 # Commands:
-#   hubot stache me <url> - uploads a moustachified version of the photo in the URL
+#   hubot stache me <said as comment on photo> - uploads a moustachified version of the photo in the URL
+#   hubot glasses me <said as comment on photo> - uploads a glasses-ified version of the photo in the URL
+#   hubot hat me <said as comment on photo> - uploads a hat-ified version of the photo in the URL
 #
 # Notes:
 #   Commenting on a Slack photo upload with "hubot stache me" will trigger hubot to upload a moustachified version of that photo
