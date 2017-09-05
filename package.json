@@ -1,11 +1,9 @@
 {
   "name": "hubot-stache",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Hubot plugin to add a moustache to the face of an uploaded photo (Slack only)",
   "main": "index.coffee",
   "scripts": {
-    "test": "node_modules/.bin/mocha --recursive --timeout 5000 --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
-    "install-test": "npm install && npm run test",
     "watch": "node_modules/.bin/mocha --recursive --timeout 5000 --growl --reporter nyan --watch --compilers coffee:coffee-script/register --require coffee-coverage/register-istanbul test",
     "coverage": "node_modules/.bin/istanbul report"
   },
