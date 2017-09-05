@@ -150,12 +150,7 @@ module.exports = (robot) ->
 
   robot.catchAll (msg) ->
     moustacheRegex = new RegExp(robot.name + ".*(stache|hat|glasses) me", "i")
-    # featureTypeRegex = /.*(stache|hat|glasses).*/i
-    # console.log(featureTypeRegex)
-    # console.log(msg.message.text)
-    # featureType = featureTypeRegex.exec(msg.message.txt)
-    # console.log(featureType)
-    featureType = "glasses"
+    featureType = msg.message.text.match(moustacheRegex)[1]
     isRequestToBeMoustachified = moustacheRegex.test(msg.message.text)
     if /file_comment|file_share/i.test(msg.message.subtype) and /image/i.test(msg.message.file.mimetype) and isRequestToBeMoustachified
       barber.downloadSlackFile msg.message.file.url_private_download, (err, attachmentFilename) ->

@@ -10,15 +10,13 @@ async = require('async')
 _ = require('underscore')
 
 # DEBUGGING
-fakepayload = require('/home/jordan/dev/nubot/payload.json')
+# fakepayload = require('/home/jordan/dev/nubot/payload.json')
 # END DEBUGGING
 
 rekognition = new (AWS.Rekognition)(
   region: 'us-west-2'
   accessKeyId: process.env.HUBOT_AWS_REKOGNITION_ACCESS_KEY_ID
   secretAccessKey: process.env.HUBOT_AWS_REKOGNITION_SECRET_ACCESS_KEY)
-
-# staches = [ 'original_stache.png', 'mustache_03.png', 'painters_brush.png', 'petite_handlebar.png' ]
 
 # console.log(robot.brain.get "staches")
 stachesDir = __dirname + '/public/templates/'
@@ -59,11 +57,11 @@ class Barber
           height = value.height
           callback()
         return
-      # (callback) ->
-      #   rekognition.detectFaces params, callback
-      #   return
       (callback) ->
-        return callback(null, fakepayload)
+        rekognition.detectFaces params, callback
+        return
+      # (callback) ->
+      #   return callback(null, fakepayload)
       (payload, callback) ->
         robot.logger.debug "HERE COMES THE FULL PAYLOAD!"
         robot.logger.debug JSON.stringify(payload)
