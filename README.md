@@ -6,6 +6,9 @@ Hubot plugin to add a moustache to the face of a photo. This plugin uses [AWS Re
 
 Currently this hubot plugin only works with Slack. If you would like to help port it to other platforms, submit a [Pull Request](https://github.com/neufeldtech/hubot-stache/pulls/)
 
+## Prerequisites
+You will need [hubot-redis-brain](https://github.com/hubotio/hubot-redis-brain) installed and working before installation
+
 ## Installation
 **This hubot script requires version 4+ of the [hubot-slack](https://github.com/slackhq/hubot-slack) slack adapter package**
 * [Install ImageMagick](https://www.imagemagick.org/script/download.php) on your hubot server
