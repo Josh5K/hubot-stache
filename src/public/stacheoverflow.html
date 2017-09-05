@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Stache Overflow</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <style>
+    div.canvas-wrapper {
+      position: absolute;
+      width: 640px;
+      height: 480px;
+      left: 50%
+    }
+    
+    #baseCanvas {
+      position: relative;
+      left: -50%;
+    }
+    
+    #overlayCanvas {
+      position: absolute;
+      top: 0;
+      left: -50%;
+    }
+    
+    input[type=range] {
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <h1 class="text-center">Stache Overflow</h1>
+    <div class="canvas-wrapper">
+      <canvas id="baseCanvas" width="640" height="480"></canvas>
+      <canvas id="overlayCanvas" width="640" height="480"></canvas>
+    </div>
+    <div class="row" style="margin-top: 510px">
+      <div class="col-6">
+        <p>Type</p>
+        <div class="form-group">
+          <select class="form-control" name="" id="feature-select">
+            <option value="glasses">Glasses</option>
+            <option selected="selected" value="stache">Moustache</option>
+            <!--<option value="mask">Mask</option>-->
+            <option value="hat">Hat</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-6">
+        <p>Select Item</p>
+        <div class="form-group">
+          <select class="form-control" id="stache-select">
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <p>
+          Upload Custom<br>
+          <small>Should be a unique, descriptive filename. For best results, has a transparent background.</small>
+        </p>
+        <div class="form-group">
+          <input type="file" id="stache-upload" accept="image/png,image/x-png,image/gif,image/jpeg">
+          <button type="button" onclick="uploadStache()" class="btn btn-primary mt-3">Upload</button>
+        </div>
+      </div>
+      <div class="col-3">
+        <p>Save Profile<br>
+          <small>This will save the current config for this stache so that you can use it with hubot-stache</small>
+        </p>
+        <button type="button" onclick="saveProfile()" class="btn btn-success">Save</button>
+      </div>
+      <div class="col-3">
+        <p>Delete Profile<br>
+          <small>This will delete the current config for this stache. It will no longer be available.</small>
+        </p>
+        <button type="button" onclick="deleteProfile($('#stache-select').val(), $('#stache-select option:selected').html())" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script>
+    
+    // var testSubject = "SyoyIzIMW" // Jordan sm
+    // var testSubject = "H1flNT_Mb" // Jordan lg
+    var testSubject = "BylWNpufb" // Jordan med
+
+    var faceLeft, faceTop, faceWidth, faceHeight, configData, feature, x_geometry, y_geometry, stacheWidth, stacheHeight, x_nose, y_nose, x_mouthLeft, y_mouthLeft, x_mouthRight, y_mouthRight, x_eyeLeft, y_eyeLeft, x_eyeRight, y_eyeRight
+    var baseCanvas = document.getElementById('baseCanvas');
+    var overlayCanvas = document.getElementById('overlayCanvas');
+    var facectx = baseCanvas.getContext('2d');
+    var stachectx = overlayCanvas.getContext('2d');
+    facectx.scale(0.5, 0.5)
+    stachectx.scale(0.5, 0.5)
+    var face = new Image();
+    var stache = new Image();
+
+    function saveProfile() {
+      console.log(`Attempting to save stache profile: ${JSON.stringify(configData)}`)
+      $.ajax("/stacheoverflow/config/stache", {
+        data: JSON.stringify(configData),
+        contentType: "application/json",
+        type: "POST"
+      }).fail(function (data, status) {
+        console.error(data, status)
+        alert(`Error saving profile: ${data.status} ${data.statusText}`)
+      }).done(function (data, status) {
+        alert('Profile Saved!')
+      })
+    }
+    function deleteProfile(id, name) {
+      var answer = confirm(`Are you sure you want to delete ${name}?`)
+      console.log(answer)
+      if (answer) {
+        $.ajax(`/stacheoverflow/config/stache/${id}`, {
+          data: JSON.stringify(configData),
+          type: "DELETE"
+        }).fail(function (data, status) {
+          console.error(data, status)
+          alert(`Error deleting profile: ${data.status} ${data.statusText}`)
+        }).done(function (data, status) {
+          alert("Stache deleted!")
+          location.reload();
+        })
+      }
+    }
+    function updateConfigData() {
+      configData = { "id": document.getElementById('stache-select').value, "fileName": $('#stache-select option:selected').html(), "featureType": feature = $('#feature-select').val() }
+      console.log(`ConfigData: ${JSON.stringify(configData)}`)
+    }
+    function uploadStache() {
+      console.log(`Attempting to upload stache`)
+      var data = new FormData();
+      $.each($('#stache-upload')[0].files, function (i, file) {
+        data.append('image', file);
+      });
+      $.ajax({
+        url: '/stacheoverflow/image/stache',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST'
+      }).fail(function (data, status) {
+        console.error(data, status)
+        alert(`Error uploading stache: ${data.status} ${data.statusText}`)
+      }).done(function (data, status) {
+        alert('Stache Uploaded!')
+        location.reload()
+      })
+    }
+    // Populate Dropdown Array with staches
+    function populateStacheSelector() {
+      $.getJSON('/stacheoverflow/config/stache', function (options) {
+        var select = document.getElementById('stache-select')
+        $(select).empty()
+        for (var i = 0; i < options.length; i++) {
+          var opt = options[i];
+          var el = document.createElement("option");
+          el.textContent = opt.fileName;
+          el.dataset.featureType = opt.featureType
+          el.value = opt.id;
+          select.appendChild(el);
+        }
+      })
+    }
+    populateStacheSelector()
+
+    function positionStache() {
+      mouthWidth = x_mouthRight - x_mouthLeft
+      stacheWidth = mouthWidth * 1.7
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (stacheWidth / stache.width)
+      stache_x_offset = (mouthWidth - stacheWidth) / 2
+      x_geometry = x_mouthLeft + stache_x_offset
+      stache_y_offset = (y_nose - y_mouthLeft) / 2
+      y_geometry = y_mouthLeft + stache_y_offset
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
+    function positionGlasses() {
+      stacheWidth = faceWidth * 0.9
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (faceWidth / stache.width)
+      stache_x_offset = (faceWidth - stacheWidth) * 2.75
+      x_geometry = x_eyeLeft - stache_x_offset
+      stache_y_offset = (y_eyeLeft - y_nose) / 1.25
+      y_geometry = y_eyeLeft + stache_y_offset
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
+    function positionMask() {
+      stacheWidth = faceWidth * 0.9
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (faceWidth / stache.width)
+      stache_x_offset = (faceWidth - stacheWidth) * 2.75
+      x_geometry = x_eyeLeft - stache_x_offset
+      stache_y_offset = (y_eyeLeft - y_nose) * 2
+      y_geometry = y_eyeLeft + stache_y_offset
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
+    function positionHat() {
+      stacheWidth = faceWidth
+      // If you are just doing server side, you need not worry about stache Height
+      stacheHeight = stache.height * (faceWidth / stache.width)
+      stache_x_offset = (faceWidth - stacheWidth) / 2
+      x_geometry = faceLeft - stache_x_offset
+      y_geometry = faceTop - (stacheHeight * 0.85)
+      stachectx.drawImage(stache, x_geometry, y_geometry, stacheWidth, stacheHeight);
+    }
+    function render() {
+      feature = $('#feature-select').val()
+      switch (feature) {
+        case "stache":
+          positionStache()
+          break;
+        case "glasses":
+          positionGlasses()
+          break;
+        case "mask":
+          positionMask()
+          break;
+        case "hat":
+          positionHat()
+          break;
+        default:
+          console.log("I don't know how to position that")
+      }
+      updateConfigData()
+    }
+    face.onload = function () {
+      facectx.drawImage(face, 0, 0);
+      $.getJSON(`/stacheoverflow/config/face/${testSubject}`, function (response) {
+
+        drawLandmarks = true
+
+        facedata = response.data.FaceDetails[0]
+        facectx.fillStyle = "#FFFF00";
+        var landmarks = facedata.Landmarks;
+
+        var boundingBox = facedata.BoundingBox
+        faceWidth = boundingBox.Width * face.width
+        faceHeight = boundingBox.Height * face.height
+        faceLeft = boundingBox.Left * face.width
+        faceTop = boundingBox.Top * face.height
+
+        if (drawLandmarks) {
+          facectx.strokeStyle = '#FF0000'
+          facectx.lineWidth = "3"
+          facectx.rect(faceLeft, faceTop, faceWidth, faceHeight);
+          facectx.stroke()
+        }
+
+        var nose = _.findWhere(landmarks, {
+          'Type': 'nose'
+        });
+        x_nose = nose.X * face.width;
+        y_nose = nose.Y * face.height;
+        if (drawLandmarks) facectx.fillRect(x_nose, y_nose, 3, 3)
+
+        var mouthLeft = _.findWhere(landmarks, {
+          'Type': 'mouthLeft'
+        });
+
+        x_mouthLeft = mouthLeft.X * face.width;
+        y_mouthLeft = mouthLeft.Y * face.height;
+        if (drawLandmarks) facectx.fillRect(x_mouthLeft, y_mouthLeft, 3, 3);
+
+        var mouthRight = _.findWhere(landmarks, {
+          'Type': 'mouthRight'
+        });
+        x_mouthRight = mouthRight.X * face.width;
+        y_mouthRight = mouthRight.Y * face.height;
+        var mouthWidth = x_mouthRight - x_mouthLeft;
+        if (drawLandmarks) facectx.fillRect(x_mouthRight, y_mouthRight, 3, 3);
+
+
+        var eyeLeft = _.findWhere(landmarks, {
+          'Type': 'eyeLeft'
+        });
+        x_eyeLeft = eyeLeft.X * face.width;
+        y_eyeLeft = eyeLeft.Y * face.height;
+        if (drawLandmarks) facectx.fillRect(x_eyeLeft, y_eyeLeft, 3, 3);
+
+        var eyeRight = _.findWhere(landmarks, {
+          'Type': 'eyeRight'
+        });
+        x_eyeRight = eyeRight.X * face.width;
+        y_eyeRight = eyeRight.Y * face.height;
+        if (drawLandmarks) facectx.fillRect(x_eyeRight, y_eyeRight, 3, 3);
+
+        stache.onload = function () {
+          render()
+        };
+        stache.src = `/stacheoverflow/image/stache/${document.getElementById('stache-select').value}`
+      }); //end get testdata json
+    };
+    face.src = `/stacheoverflow/image/face/${testSubject}`;
+
+    $("#feature-select").on("change", function () {
+      stachectx.clearRect(0, 0, 1280, 960)
+      render()
+    })
+    $("#stache-select").on("change", function () {
+      // Changing the source automatically will call render because the image loads again
+      stache.src = `/stacheoverflow/image/stache/${this.value}`
+      feature = $(this).find(':selected').data('feature-type')
+      document.getElementById('feature-select').value = feature
+      stachectx.clearRect(0, 0, 1280, 960)
+    })
+  </script>
+</body>
+
+</html>

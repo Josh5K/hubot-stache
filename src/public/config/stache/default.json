@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ryIAzLLGW",
+    "fileName": "skinny-stache.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "BkPemULfW",
+    "fileName": "classic-stache.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "B1r-m8UG-",
+    "fileName": "handlebar-stache.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "rJcZQ8IM-",
+    "fileName": "painters-brush.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "SJlMQUUGZ",
+    "fileName": "aviators-classic.png",
+    "featureType": "glasses"
+  },
+  {
+    "id": "SyCczlYMZ",
+    "fileName": "deal-glasses.png",
+    "featureType": "glasses"
+  },
+  {
+    "id": "rJgPXxFM-",
+    "fileName": "tophat.png",
+    "featureType": "hat"
+  },
+  {
+    "id": "rJuANeYzW",
+    "fileName": "chef.png",
+    "featureType": "hat"
+  },
+  {
+    "id": "By4HultMb",
+    "fileName": "lips.png",
+    "featureType": "stache"
+  },
+  {
+    "id": "Hy9kqetfZ",
+    "fileName": "curlybrown.png",
+    "featureType": "stache"
+  }
+]
